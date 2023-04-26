@@ -38,7 +38,7 @@ with open('nbaplayers.txt', 'w') as file:
                 item['height_inches'] = ''
             if item['height_feet'] == None:
                 item['height_feet'] = ''
-            players = Players(str(item['first_name']), str(item['last_name']), str(item['height_inches']), str(item['height_feet']))
+            players = Players(item['first_name'], item['last_name'], item['height_inches'], item['height_feet'])
             file.write(players.player_data())
     
     file.close()
