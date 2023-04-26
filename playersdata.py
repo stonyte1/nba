@@ -48,5 +48,5 @@ with open('%s.txt' % yesterday_date, 'w') as file:
                 item['stl'] = ''  
             players = Player(item['player']['first_name'], item['player']['last_name'], item['pts'], item['reb'], item['stl']) 
             file.write(players.player_data())
-
+    
     file.close()
