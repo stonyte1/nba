@@ -3,54 +3,50 @@ import json
 from datetime import datetime, timedelta
 import time
 
-#Gets yesterdays date 
+class Player():
+    def __init__(self, name, surname, pts, reb, stl):
+        self.name = name
+        self.surname = surname
+        self.pts = pts
+        self.reb = reb
+        self.stl = stl
+
+    def player_data(self):
+        return f'{self.name}, {self.surname}, {self.pts}, {self.reb}, {self.stl}\n'
+
 yesterday_datetime = datetime.now() - timedelta(days=1)
 yesterday_date = yesterday_datetime.strftime('%Y-%m-%d')
 
-file = open('%s.txt' % yesterday_date, 'w')
-page_number = 0
-while True:
-    page_number += 1
-    query = {'page': str(page_number), 'per_page': '25', 'dates': str(yesterday_date)}
+with open('%s.txt' % yesterday_date, 'w') as file:
+    
+    page_number = 0
+    while True:
+        page_number += 1
+        query = {'page': str(page_number), 'per_page': '25', 'dates': str(yesterday_date)}
 
-    try:
-        response_API = requests.get('https://www.balldontlie.io/api/v1/stats', timeout=50, params=query)
-        if response_API != 200:
+        try:
+            response_API = requests.get('https://www.balldontlie.io/api/v1/stats', timeout=50, params=query)
+            response_API.raise_for_status()
+        except requests.exceptions.RequestException as err:
+            print(err)
             time.sleep(20)
-        response_API.raise_for_status()
-    except requests.exceptions.HTTPError as errh:
-        print(errh)
-    except requests.exceptions.ConnectionError as errc:
-        print(errc)
-    except requests.exceptions.Timeout as errt:
-        print(errt)
-    except requests.exceptions.RequestException as err:
-        print(err)
 
-    #Reads API and opens json:
-    playersData = json.loads(response_API.text)
-    #Data about players:
-    allPlayers = len(playersData['data'])
-    complete_data = ''
+        try:
+            playersData = json.loads(response_API.text)
+        except json.JSONDecodeError as err:
+            print(err)
+            break
 
-    for player in range(0, allPlayers):
-        item = playersData['data'][player]
-        if item['player']['first_name'] != None:
-            complete_data += str(item['player']['first_name'])
-        complete_data += ','
-        if item['player']['last_name'] != None:
-            complete_data += str(item['player']['last_name'])
-        complete_data += ','
-        if item['pts'] != None:
-            complete_data += str(item['pts'])      
-        complete_data += ','
-        if item['reb'] != None:
-            complete_data += str(item['reb'])
-        complete_data += ','
-        if item['stl'] != None:
-            complete_data += str(item['stl'])
-        complete_data += '\n'
-        file.write(complete_data)
-    if complete_data is not True:
-        break
-file.close()
+        playersData = json.loads(response_API.text)
+      
+        for item in playersData['data']:
+            if item['pts'] is None:
+                item['pts'] = ''
+            if item['reb'] is None:
+                item['reb'] = ''
+            if item['stl'] is None:
+                item['stl'] = ''  
+            players = Player(item['player']['first_name'], item['player']['last_name'], item['pts'], item['reb'], item['stl']) 
+            file.write(players.player_data())
+
+    file.close()
