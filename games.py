@@ -19,7 +19,7 @@ yesterday_date = yesterday_datetime.strftime('%Y-%m-%d')
 page_number = 0
 while True:
     page_number += 1
-    query = {'page': str(page_number), 'per_page': '25', 'dates': str(yesterday_date)}
+    query = {'page': str(page_number - 1), 'per_page': '25', 'dates': str(yesterday_date)}
 
     try:
         response_API = requests.get('https://www.balldontlie.io/api/v1/stats', timeout=50, params=query)
@@ -41,4 +41,4 @@ while True:
             item['reb'] = ''
         if item['stl'] is None:
             item['stl'] = ''  
-        GamesData(Player).add_data(first_name=item['player']['first_name'], last_name=item['player']['last_name'], pts=item['pts'], reb=item['reb'], stl=item['stl']) 
+        GamesData(Game).add_data(player_id=item['player']['id'], pts=item['pts'], reb=item['reb'], stl=item['stl']) 
