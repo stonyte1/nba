@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, create_engine, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker
-import pandas as pd
 
 engine = create_engine('sqlite:///players_stats.db')
 Base = declarative_base()
@@ -10,21 +9,25 @@ session = Session()
 class Player(Base):
     __tablename__ = 'player'
     id = Column(Integer, primary_key=True)
-    first_name = Column('First name', String(30))
-    last_name = Column('Surname', String(30))
-    height_inches = Column('Height inches', String(10))
-    height_feet = Column('Height feet', String(10))
+    first_name = Column('first_name', String(30))
+    last_name = Column('surname', String(30))
+    height_inches = Column('height_inches', String(10))
+    height_feet = Column('height_feet', String(10))
 
 class Game(Base):
     __tablename__ = 'game'
     id = Column(Integer, primary_key=True)
     # first_name = Column('First name', String(30))
     # last_name = Column('Surname', String(30))
-    pts = Column('Points', Integer)
-    reb = Column('Rebound', Integer)
-    stl = Column('Steals', Integer)
-    player_id = Column('Player', ForeignKey('player.id'))
+    pts = Column('points', Integer)
+    reb = Column('rebound', Integer)
+    stl = Column('steals', Integer)
+    date = Column('date', String(30))
+    game_id = Column('game_id', Integer)
+    team = Column('team', String(30))
+    player_id = Column('player_id', ForeignKey('player.id'))
+    
 
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)
 
 
