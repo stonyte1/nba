@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
     extract_players_data()
 
-    yesterday_datetime = datetime.now() - timedelta(days=86)
+    yesterday_datetime = datetime.now() - timedelta(days=90)
     yesterday_date = yesterday_datetime.strftime('%Y-%m-%d')
 
     extract_games_data(yesterday_date)

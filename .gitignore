@@ -165,3 +165,8 @@ results_check.ipynb
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+players.csv
+.gitignore
+games.csv
+teams.csv
+

@@ -14,33 +14,44 @@ def clean_save_players_data():
 
 def clean_save_games_data():
     conn = sqlite3.connect('players_stats.db')
+
     query = "SELECT * FROM game"
     data = pd.read_sql(query, conn)
 
-    df = pd.DataFrame(data)
+    data_no_duplicate = data.drop_duplicates(subset=data.columns.difference(['id']), keep='first')
+    data_no_duplicate.to_sql('game', conn, if_exists='replace', index=False)
 
-    df_no_duplicate = df.drop_duplicates(subset=df.columns.difference(['id']), keep='first')
-    df_no_duplicate.to_sql('game', conn, if_exists='replace', index=False)
-
-    query = '''
+    cursor = conn.cursor()
+    create_teams_table = '''
         CREATE TABLE teams AS
         SELECT team, SUM(points) AS total FROM game
         GROUP BY team;
-
+    '''
+    cursor.execute(create_teams_table)
+    
+    create_ranking_table = '''
         CREATE TABLE game_rankings AS 
         SELECT *,
             ROW_NUMBER() OVER (PARTITION BY team ORDER BY points DESC) AS ranking
         FROM game;
+    '''
 
+    cursor.execute(create_ranking_table)
+
+    delete_table = '''
         DROP TABLE game;
+    '''
+    cursor.execute(delete_table)
 
+    rename_table = '''
         ALTER TABLE game_rankings RENAME TO game;
     '''
-    proccesed_data = pd.read_sql(query, conn)
-
+    cursor.execute(rename_table)
+    
+    conn.commit()
     conn.close()
 
-    proccesed_data.to_csv('games.csv')
+    data_no_duplicate.to_csv('games.csv')
 
 
 def save_teams_data():

@@ -52,3 +52,4 @@ def extract_games_data(yesterday_date):
                 team=item['team']['name'],
                 game_id = item['game']['id'],
                 ) 
+            
