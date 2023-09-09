@@ -1,7 +1,7 @@
 import requests
 import json
 import time
-from model import *
+from functions.model import *
 
 class GamesData:
     def __init__(self, data):

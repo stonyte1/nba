@@ -9,7 +9,7 @@ def clean_save_players_data():
     df = pd.DataFrame(players_data)
     conn.close()
 
-    df.to_csv('players.csv')
+    df.to_csv('saved_data/players.csv')
 
 
 def clean_save_games_data():
@@ -51,7 +51,7 @@ def clean_save_games_data():
     conn.commit()
     conn.close()
 
-    data_no_duplicate.to_csv('games.csv')
+    data_no_duplicate.to_csv('saved_data/games.csv')
 
 
 def save_teams_data():
@@ -61,4 +61,4 @@ def save_teams_data():
     df = pd.DataFrame(teams_data)
     conn.close()
 
-    df.to_csv('teams.csv')
+    df.to_csv('saved_data/teams.csv')
