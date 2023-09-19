@@ -23,8 +23,8 @@ def extract_players_data():
             response_API.raise_for_status()
             
         except requests.exceptions.RequestException as err:
-                print(err)
-                time.sleep(20)
+            print(err)
+            time.sleep(20)
 
         try:
             playersData = json.loads(response_API.text)

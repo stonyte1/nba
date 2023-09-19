@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, create_engine, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-engine = create_engine('sqlite:///players_stats.db')
+engine = create_engine('sqlite:///nba_stats.db')
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -15,10 +15,8 @@ class Player(Base):
     height_feet = Column('height_feet', String(10))
 
 class Game(Base):
-    __tablename__ = 'game'
+    __tablename__ = 'season_games'
     id = Column(Integer, primary_key=True)
-    # first_name = Column('First name', String(30))
-    # last_name = Column('Surname', String(30))
     pts = Column('points', Integer)
     reb = Column('rebound', Integer)
     stl = Column('steals', Integer)
@@ -26,8 +24,3 @@ class Game(Base):
     game_id = Column('game_id', Integer)
     team = Column('team', String(30))
     player_id = Column('player_id', ForeignKey('player.id'))
-    
-
-# Base.metadata.create_all(engine)
-
-

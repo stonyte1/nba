@@ -12,11 +12,11 @@ class GamesData:
         self.session.add(self.data(**elements))
         return self.session.commit()
 
-def extract_games_data(yesterday_date):
+def extract_games_data():
     page_number = 0
     while True:
         page_number += 1
-        query = {'page': str(page_number - 1), 'per_page': '25', 'start_date': str(yesterday_date)}
+        query = {'page': str(page_number - 1), 'per_page': '25', 'seasons[]': 2022}
 
         try:
             response_API = requests.get('https://www.balldontlie.io/api/v1/stats', timeout=50, params=query)
@@ -25,7 +25,6 @@ def extract_games_data(yesterday_date):
         except requests.exceptions.RequestException as err:
             print(err)
             time.sleep(20)
-
 
         try:
             gamesData = json.loads(response_API.text)

@@ -169,4 +169,5 @@ players.csv
 .gitignore
 games.csv
 teams.csv
-
+latest_game.csv
+season_stats.csv
